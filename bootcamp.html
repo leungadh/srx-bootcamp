@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SRX Firewall Bootcamp · Internal Training · Singapore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script>
+  // TWEAKS — persisted defaults
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "theme": "light",
+    "accent": "slate"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* accent hues */
+    --hue-teal: 200;
+    --hue-slate: 250;
+    --hue-amber: 60;
+    --hue-crimson: 25;
+
+    --accent-h: var(--hue-teal);
+    --accent: oklch(55% 0.11 var(--accent-h));
+    --accent-soft: oklch(94% 0.03 var(--accent-h));
+    --accent-ink: oklch(30% 0.08 var(--accent-h));
+  }
+
+  /* LIGHT */
+  html[data-theme="light"] {
+    --bg: oklch(99% 0.003 230);
+    --bg-2: oklch(97% 0.004 230);
+    --bg-3: oklch(94.5% 0.005 230);
+    --line: oklch(90% 0.006 230);
+    --line-2: oklch(85% 0.008 230);
+    --ink: oklch(22% 0.01 230);
+    --ink-2: oklch(40% 0.01 230);
+    --ink-3: oklch(55% 0.01 230);
+    --ink-4: oklch(68% 0.01 230);
+    --on-accent: oklch(99% 0.003 230);
+    --card: oklch(100% 0 0);
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 0 0 1px rgba(15,23,42,.04);
+    --shadow-lg: 0 12px 32px -12px rgba(15,23,42,.18), 0 0 0 1px rgba(15,23,42,.05);
+  }
+  /* DARK */
+  html[data-theme="dark"] {
+    --bg: oklch(17% 0.012 240);
+    --bg-2: oklch(21% 0.012 240);
+    --bg-3: oklch(25% 0.012 240);
+    --line: oklch(30% 0.012 240);
+    --line-2: oklch(36% 0.012 240);
+    --ink: oklch(96% 0.004 230);
+    --ink-2: oklch(80% 0.006 230);
+    --ink-3: oklch(65% 0.008 230);
+    --ink-4: oklch(50% 0.01 230);
+    --on-accent: oklch(18% 0.01 240);
+    --card: oklch(22% 0.012 240);
+    --accent: oklch(72% 0.11 var(--accent-h));
+    --accent-soft: oklch(30% 0.04 var(--accent-h));
+    --accent-ink: oklch(88% 0.07 var(--accent-h));
+    --shadow: 0 1px 2px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.04);
+    --shadow-lg: 0 16px 40px -12px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+  .mono { font-family: var(--font-mono); font-feature-settings: normal; }
+
+  /* Top bar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in oklab, var(--bg) 85%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--bg);
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .brand-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    padding-left: 12px;
+    margin-left: 4px;
+    border-left: 1px solid var(--line-2);
+  }
+  .topnav {
+    display: flex;
+    gap: 22px;
+    margin-left: auto;
+    align-items: center;
+  }
+  .topnav a {
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .topnav a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--line-2);
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .15s;
+  }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .btn-primary:hover { background: var(--ink-2); border-color: var(--ink-2); }
+  .btn-accent {
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+  }
+  .btn-accent:hover { filter: brightness(1.05); }
+
+  /* Layout */
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
+  .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+  h1.hero-title {
+    font-size: clamp(40px, 5.2vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    margin: 22px 0 22px;
+  }
+  h1.hero-title .accent { color: var(--accent); }
+  .hero-lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 52ch;
+    margin: 0 0 28px;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Hero right — spec card */
+  .spec-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .spec-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin: 0 0 16px;
+  }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    align-items: baseline;
+  }
+  .spec-row:first-of-type { border-top: none; padding-top: 0; }
+  .spec-k {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .spec-v { color: var(--ink); }
+  .spec-v .sub { color: var(--ink-3); font-size: 13px; display: block; margin-top: 2px; }
+
+  /* Section */
+  section.block {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section.block.alt { background: var(--bg-2); }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 64px;
+    margin-bottom: 40px;
+  }
+  .sec-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 6px;
+  }
+  .sec-label .num {
+    display: block;
+    color: var(--accent);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  h2.sec-title {
+    font-size: clamp(26px, 2.6vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0 0 14px;
+    max-width: 22ch;
+  }
+  .sec-lede {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  /* Glance grid */
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .glance-cell {
+    padding: 24px 24px 26px;
+    border-right: 1px solid var(--line);
+  }
+  .glance-cell:last-child { border-right: none; }
+  .glance-k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .glance-v {
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .glance-sub {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+
+  /* Prereqs */
+  .prereq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .prereq-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px 24px 20px;
+  }
+  .prereq-card .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .prereq-card h4 {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .prereq-card p {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin: 0 0 12px;
+  }
+  .prereq-card .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    background: var(--bg-3);
+    border-radius: 4px;
+    color: var(--ink-2);
+  }
+  .prereq-card a.link {
+    color: var(--accent-ink);
+    font-size: 13.5px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-soft);
+    padding-bottom: 1px;
+    font-family: var(--font-mono);
+    word-break: break-all;
+  }
+  .prereq-card a.link:hover { border-color: var(--accent); }
+
+  /* Agenda tabs */
+  .day-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .day-tab {
+    background: none;
+    border: none;
+    padding: 14px 20px 16px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink-3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 180px;
+    text-align: left;
+    transition: color .15s;
+  }
+  .day-tab:hover { color: var(--ink); }
+  .day-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .day-tab .d-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .day-tab.active .d-num { color: var(--accent); }
+  .day-tab .d-title {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+  .day-theme {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  html[data-theme="dark"] .day-theme { background: var(--bg-3); }
+  .day-theme .theme-k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 2px;
+    flex-shrink: 0;
+    width: 80px;
+  }
+  .day-theme p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  .agenda-table {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .agenda-row {
+    display: grid;
+    grid-template-columns: 140px 80px 1fr 130px;
+    gap: 20px;
+    padding: 16px 22px;
+    border-top: 1px solid var(--line);
+    align-items: flex-start;
+  }
+  .agenda-row:first-child { border-top: none; }
+  .agenda-row.header {
+    background: var(--bg-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    padding: 12px 22px;
+  }
+  html[data-theme="dark"] .agenda-row.header { background: var(--bg-3); }
+  .agenda-row.break {
+    background: var(--bg-2);
+    color: var(--ink-3);
+  }
+  html[data-theme="dark"] .agenda-row.break { background: var(--bg-3); }
+  .agenda-row.break .ag-session { font-style: italic; }
+  .ag-time {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .ag-dur {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .ag-session {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .ag-session .desc {
+    display: block;
+    color: var(--ink-3);
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .ag-session b { font-weight: 600; }
+  .ag-format {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--bg-3);
+    color: var(--ink-2);
+    display: inline-block;
+    justify-self: flex-start;
+  }
+  .ag-format.lab {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+  .ag-format.lec { background: var(--bg-3); }
+  .ag-format.dis { background: transparent; border: 1px dashed var(--line-2); color: var(--ink-3); }
+
+  /* Venue + hotel */
+  .loc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .loc-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .loc-visual {
+    height: 220px;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+    opacity: .7;
+  }
+  .map-streets {
+    position: absolute;
+    inset: 0;
+  }
+  .map-pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .map-pin-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--card);
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 8px rgba(0,0,0,.15);
+  }
+  .map-pin-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--card);
+    border: 1px solid var(--line-2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .loc-caption {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .loc-body {
+    padding: 22px 24px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .loc-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .loc-name {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+  .loc-role {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-bottom: 16px;
+  }
+  .loc-meta {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 8px 14px;
+    font-size: 13.5px;
+    margin-bottom: 18px;
+  }
+  .loc-meta dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 2px;
+  }
+  .loc-meta dd { margin: 0; color: var(--ink); }
+  .loc-notes {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    padding: 14px 0 0;
+    border-top: 1px dashed var(--line-2);
+    margin-top: auto;
+  }
+  .loc-notes .note-k {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 4px;
+  }
+
+  /* Register */
+  .register {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 12px;
+    padding: 56px 56px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  html[data-theme="dark"] .register { background: var(--card); border: 1px solid var(--line); }
+  .register h3 {
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0 0 14px;
+  }
+  .register p {
+    font-size: 15px;
+    color: color-mix(in oklab, var(--bg) 70%, var(--ink));
+    line-height: 1.6;
+    margin: 0 0 24px;
+    max-width: 48ch;
+  }
+  html[data-theme="dark"] .register p { color: var(--ink-2); }
+  .register .reg-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--on-accent);
+    padding: 13px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14.5px;
+  }
+  .register .reg-cta:hover { filter: brightness(1.05); }
+  .reg-contact {
+    background: color-mix(in oklab, var(--bg) 10%, transparent);
+    border: 1px solid color-mix(in oklab, var(--bg) 20%, transparent);
+    border-radius: 8px;
+    padding: 22px;
+  }
+  html[data-theme="dark"] .reg-contact { background: var(--bg-3); border-color: var(--line); }
+  .reg-contact .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--bg) 60%, var(--ink));
+    margin-bottom: 12px;
+  }
+  html[data-theme="dark"] .reg-contact .k { color: var(--ink-3); }
+  .reg-contact .name {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .reg-contact .role { font-size: 13px; color: color-mix(in oklab, var(--bg) 60%, var(--ink)); margin-bottom: 14px; }
+  html[data-theme="dark"] .reg-contact .role { color: var(--ink-3); }
+  .reg-contact .email {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--bg);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--bg) 30%, transparent);
+    padding-bottom: 2px;
+  }
+  html[data-theme="dark"] .reg-contact .email { color: var(--accent); border-color: var(--accent-soft); }
+
+  /* Footer */
+  footer.foot {
+    padding: 40px 0 56px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .mono { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Tweaks panel */
+  .tweaks {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 60;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    padding: 16px 16px 14px;
+    width: 260px;
+    display: none;
+    font-size: 13px;
+  }
+  .tweaks.visible { display: block; }
+  .tweaks h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tweak-row { margin-bottom: 14px; }
+  .tweak-row:last-child { margin-bottom: 0; }
+  .tweak-label {
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .seg {
+    display: flex;
+    background: var(--bg-2);
+    border-radius: 6px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .seg button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 6px 8px;
+    font-size: 12px;
+    font: inherit;
+    font-size: 12px;
+    color: var(--ink-2);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .seg button.on {
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 1px 2px rgba(0,0,0,.06);
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .swatch {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: var(--sw);
+    position: relative;
+    transition: transform .12s;
+  }
+  .swatch.on {
+    border-color: var(--ink);
+    transform: scale(0.95);
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .hero-grid, .sec-head, .prereq-grid, .loc-grid, .register { grid-template-columns: 1fr; gap: 28px; }
+    .glance { grid-template-columns: repeat(2, 1fr); }
+    .glance-cell:nth-child(2) { border-right: none; }
+    .glance-cell:nth-child(1), .glance-cell:nth-child(2) { border-bottom: 1px solid var(--line); }
+    .agenda-row { grid-template-columns: 110px 1fr; gap: 10px; }
+    .agenda-row .ag-dur, .agenda-row .ag-format { grid-column: 2; }
+    .agenda-row.header { display: none; }
+    .register { padding: 36px 28px; }
+    .topnav a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark mono">S</div>
+      <div>
+        SRX Bootcamp
+        <span class="brand-sub">Internal · APJ Systems Eng</span>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="#agenda">Agenda</a>
+      <a href="#prereqs">Prereqs</a>
+      <a href="#venue">Venue &amp; Stay</a>
+      <a href="#register" class="btn btn-primary">Request a seat →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>3-Day Intensive · Singapore</span>
+      <h1 class="hero-title">Build, secure, and run <span class="accent">Juniper SRX</span> firewalls end-to-end.</h1>
+      <p class="hero-lede">An instructor-led, lab-heavy bootcamp for internal Systems Engineers. Move from zones and policy fundamentals on Day 1 to NAT, routing and IPsec on Day 2, then advanced security services and high availability on Day 3 — culminating in a timed capstone troubleshooting challenge.</p>
+      <div class="hero-ctas">
+        <a href="#register" class="btn btn-accent">Request a seat</a>
+        <a href="#agenda" class="btn">View 3-day agenda</a>
+      </div>
+    </div>
+    <aside class="spec-card" aria-label="At a glance">
+      <h3>At a glance</h3>
+      <div class="spec-row"><div class="spec-k">Dates</div><div class="spec-v">May 26 – 28, 2026 <span class="sub">or June 2 – 4, 2026 (tentative)</span></div></div>
+      <div class="spec-row"><div class="spec-k">Format</div><div class="spec-v">3 days · In-person · ~50% hands-on lab</div></div>
+      <div class="spec-row"><div class="spec-k">Seats</div><div class="spec-v">Limited to 20 engineers</div></div>
+      <div class="spec-row"><div class="spec-k">Cost</div><div class="spec-v">Internal — no charge<span class="sub">Travel booked through your cost center</span></div></div>
+      <div class="spec-row"><div class="spec-k">Outcome</div><div class="spec-v">JNCIS-SEC readiness + production SRX design confidence</div></div>
+    </aside>
+  </div>
+</section>
+
+<!-- AT A GLANCE METRICS -->
+<section class="block">
+  <div class="wrap">
+    <div class="glance">
+      <div class="glance-cell">
+        <div class="glance-k">Duration</div>
+        <div class="glance-v">3 days</div>
+        <div class="glance-sub">9:00 AM – ~5:15 PM SGT</div>
+      </div>
+      <div class="glance-cell">
+        <div class="glance-k">Lab time</div>
+        <div class="glance-v">9 hands-on labs</div>
+        <div class="glance-sub">Juniper vLabs · one pod per student</div>
+      </div>
+      <div class="glance-cell">
+        <div class="glance-k">Venue</div>
+        <div class="glance-v">Singapore</div>
+        <div class="glance-sub">HPE — 1 Depot Close</div>
+      </div>
+      <div class="glance-cell">
+        <div class="glance-k">Cohort</div>
+        <div class="glance-v">≤ 20 SEs</div>
+        <div class="glance-sub">Internal · APJ region priority</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREREQUISITES -->
+<section class="block alt" id="prereqs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-label"><span class="num">01 / Before you arrive</span>Prerequisites</div>
+      <div>
+        <h2 class="sec-title">Come ready to commit config, not to learn the CLI.</h2>
+        <p class="sec-lede">The curriculum moves fast. Both items below are expected; finishing the on-demand course meaningfully changes how much you take away from the hands-on labs.</p>
+      </div>
+    </div>
+    <div class="prereq-grid">
+      <div class="prereq-card">
+        <div class="num">Required</div>
+        <h4>Comfortable with basic SRX CLI &amp; operation</h4>
+        <p>You should be able to navigate Junos operational and configuration modes, edit hierarchies, and commit changes without a cheat-sheet. JNCIA-SEC level or equivalent hands-on time is the baseline.</p>
+        <span class="tag">JNCIA-SEC · or equivalent</span>
+      </div>
+      <div class="prereq-card">
+        <div class="num">Strongly recommended</div>
+        <h4>Complete <i>Juniper Security</i> on-demand before Day 1</h4>
+        <p>Work through the Juniper Learning on-demand track. It covers the zones, policy, NAT and VPN foundations we will build on from the first morning.</p>
+        <a class="link" href="https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=10925" target="_blank" rel="noopener">learningportal.juniper.net/…/id=10925</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section class="block" id="agenda">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-label"><span class="num">02 / Curriculum</span>3-Day Agenda</div>
+      <div>
+        <h2 class="sec-title">Foundations Monday. Deployment Tuesday. Advanced &amp; HA Wednesday.</h2>
+        <p class="sec-lede">Each day pairs focused lectures with hands-on labs in a personal vLabs pod. Timings are in Singapore time (SGT). Break and lunch slots are held strictly so labs stay on track.</p>
+      </div>
+    </div>
+
+    <div class="day-tabs" role="tablist">
+      <button class="day-tab active" data-day="1" role="tab"><span class="d-num">Day 01 · Mon</span><span class="d-title">SRX Fundamentals &amp; Policy</span></button>
+      <button class="day-tab" data-day="2" role="tab"><span class="d-num">Day 02 · Tue</span><span class="d-title">NAT, Routing &amp; VPN</span></button>
+      <button class="day-tab" data-day="3" role="tab"><span class="d-num">Day 03 · Wed</span><span class="d-title">Advanced Services &amp; HA</span></button>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-panel active" data-day="1">
+      <div class="day-theme">
+        <div class="theme-k">Theme</div>
+        <p>Get comfortable with Junos on SRX, understand flow-based processing, and build your first working security policy.</p>
+      </div>
+      <div class="agenda-table" id="d1-table"></div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-panel" data-day="2">
+      <div class="day-theme">
+        <div class="theme-k">Theme</div>
+        <p>Move from basic policy enforcement to real-world deployment scenarios — NAT, routing integration, and site-to-site / remote-access VPN.</p>
+      </div>
+      <div class="agenda-table" id="d2-table"></div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-panel" data-day="3">
+      <div class="day-theme">
+        <div class="theme-k">Theme</div>
+        <p>Layer advanced security services on top of your policies, then make the whole thing highly available and multi-tenant.</p>
+      </div>
+      <div class="agenda-table" id="d3-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE + HOTEL -->
+<section class="block alt" id="venue">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-label"><span class="num">03 / Logistics</span>Venue &amp; stay</div>
+      <div>
+        <h2 class="sec-title">HPE Singapore at Depot Close, with a suggested hotel on the Singapore River.</h2>
+        <p class="sec-lede">Bootcamp runs at our Singapore office. The suggested hotel below sits on the Singapore River, about 15 minutes by taxi from the office and convenient for evenings out. Book travel through your usual HPE channel; organizer can assist with letter of invitation if needed.</p>
+      </div>
+    </div>
+
+    <div class="loc-grid">
+      <!-- VENUE -->
+      <article class="loc-card">
+        <div class="loc-visual" aria-hidden="true">
+          <div class="map-bg"></div>
+          <svg class="map-streets" viewBox="0 0 400 220" preserveAspectRatio="none">
+            <path d="M 0 120 Q 120 100 200 115 T 400 130" stroke="var(--line-2)" stroke-width="2" fill="none"/>
+            <path d="M 220 0 L 200 110 L 210 220" stroke="var(--line-2)" stroke-width="2" fill="none"/>
+            <path d="M 0 60 L 180 90" stroke="var(--line-2)" stroke-width="1.5" fill="none"/>
+            <path d="M 240 140 L 400 180" stroke="var(--line-2)" stroke-width="1.5" fill="none"/>
+          </svg>
+          <div class="map-pin">
+            <div class="map-pin-label">HPE · Depot Close</div>
+            <div class="map-pin-dot"></div>
+          </div>
+          <div class="loc-caption">fig.01 — venue map (schematic)</div>
+        </div>
+        <div class="loc-body">
+          <div class="loc-kicker">Training venue</div>
+          <h3 class="loc-name">HPE Singapore</h3>
+          <div class="loc-role">Classroom &amp; lab facility — all three days</div>
+          <dl class="loc-meta">
+            <dt>Address</dt><dd>1 Depot Close, Singapore 109841</dd>
+            <dt>Phone</dt><dd class="mono">+65 6275 3888</dd>
+            <dt>Hours</dt><dd>Mon – Fri · Opens 09:00 SGT</dd>
+            <dt>Check-in</dt><dd>Reception — bring photo ID + HPE badge</dd>
+          </dl>
+          <div class="loc-notes">
+            <div class="note-k">Getting there</div>
+            Nearest MRT stations are Labrador Park (CC27) and HarbourFront (NE1/CC29). Allow a short taxi or 10-minute walk from either. Visitor parking on site is limited — prefer ride-hail or MRT.
+          </div>
+        </div>
+      </article>
+
+      <!-- HOTEL -->
+      <article class="loc-card">
+        <div class="loc-visual" aria-hidden="true">
+          <div class="map-bg"></div>
+          <svg class="map-streets" viewBox="0 0 400 220" preserveAspectRatio="none">
+            <path d="M 0 140 Q 100 80 200 100 T 400 90" stroke="var(--accent)" stroke-width="2.5" fill="none" opacity="0.5"/>
+            <path d="M 130 0 L 145 220" stroke="var(--line-2)" stroke-width="2" fill="none"/>
+            <path d="M 0 180 L 400 160" stroke="var(--line-2)" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="map-pin">
+            <div class="map-pin-label">Four Points · Riverview</div>
+            <div class="map-pin-dot"></div>
+          </div>
+          <div class="loc-caption">fig.02 — suggested lodging (schematic)</div>
+        </div>
+        <div class="loc-body">
+          <div class="loc-kicker">Suggested hotel</div>
+          <h3 class="loc-name">Four Points by Sheraton, Riverview</h3>
+          <div class="loc-role">Marriott Bonvoy · HPE corporate rate may apply</div>
+          <dl class="loc-meta">
+            <dt>Address</dt><dd>382 Havelock Road, Singapore 169629</dd>
+            <dt>Distance</dt><dd>~15 min drive from HPE Depot Close</dd>
+            <dt>Area</dt><dd>Robertson Quay / Singapore River — restaurants, evening walks</dd>
+            <dt>Booking</dt><dd>Through your HPE travel portal</dd>
+          </dl>
+          <div class="loc-notes">
+            <div class="note-k">Booking note</div>
+            Rooms block is not pre-reserved — please book early, especially around public holidays. If Four Points is unavailable, any hotel along Havelock Road or Clarke Quay offers comparable transit time to Depot Close.
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section class="block" id="register">
+  <div class="wrap">
+    <div class="register">
+      <div>
+        <h3>Request a seat in the next SRX bootcamp.</h3>
+        <p>Seats are limited to 20 engineers and allocated by the organizer. Email the registration contact with your name, team, manager, preferred week (May 26 – 28 or June 2 – 4), and confirmation that you have completed — or will complete — the Juniper Security on-demand course before Day 1.</p>
+        <a href="mailto:aleung@hpe.com?subject=SRX%20Bootcamp%20%E2%80%94%20Seat%20Request&body=Name%3A%0ATeam%3A%0AManager%3A%0APreferred%20week%3A%20(May%2026-28%20%2F%20June%202-4)%0AJuniper%20Security%20on-demand%20complete%3A%20(yes%2Fplanned%20date)%0A%0AAny%20questions%3A" class="reg-cta">Email to request a seat →</a>
+      </div>
+      <div class="reg-contact">
+        <div class="k">Organizer</div>
+        <div class="name">Kelly Brazil</div>
+        <div class="role">Bootcamp organizer</div>
+        <div style="height:14px"></div>
+        <div class="k" style="margin-top:4px">Registration contact</div>
+        <div class="name" style="font-size:15px">Andy Leung</div>
+        <a class="email" href="mailto:aleung@hpe.com">aleung@hpe.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap" style="display:flex; justify-content: space-between; width:100%; flex-wrap: wrap; gap:16px;">
+    <div>
+      <span class="mono">SRX Bootcamp · v1 · Internal only</span>
+    </div>
+    <div class="mono">Last updated · Apr 2026</div>
+  </div>
+</footer>
+
+<!-- TWEAKS PANEL -->
+<div class="tweaks" id="tweaks-panel" aria-label="Tweaks">
+  <h4>Tweaks <span class="mono" style="color:var(--ink-4); font-size:10px;">v1</span></h4>
+  <div class="tweak-row">
+    <label class="tweak-label">Theme</label>
+    <div class="seg" id="seg-theme">
+      <button data-v="light">Light</button>
+      <button data-v="dark">Dark</button>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label class="tweak-label">Accent color</label>
+    <div class="swatches" id="sw-accent">
+      <div class="swatch" data-v="teal"   style="--sw: oklch(55% 0.11 200)" title="Teal"></div>
+      <div class="swatch" data-v="slate"  style="--sw: oklch(55% 0.11 250)" title="Slate blue"></div>
+      <div class="swatch" data-v="amber"  style="--sw: oklch(65% 0.12 60)"  title="Amber"></div>
+      <div class="swatch" data-v="crimson" style="--sw: oklch(55% 0.14 25)" title="Crimson"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const AGENDA_DAY1 = [
+  ['9:00 – 9:30',   '30 min', '<b>Welcome, introductions, lab access verification</b>', 'Lecture'],
+  ['9:30 – 10:30',  '60 min', '<b>SRX platform overview</b>', 'Lecture',
+    'Product line (branch, mid-range, SRX Series line cards), Junos architecture, control vs. data plane, packet-based vs. flow-based processing.'],
+  ['10:30 – 10:45', '15 min', 'Break', ''],
+  ['10:45 – 11:45', '60 min', '<b>Lab 1 · Junos CLI &amp; initial setup</b>', 'Hands-on lab',
+    'Connect to vLabs pod; operational vs. configuration mode; commit model (candidate, rollback, confirmed); interface configuration; basic system services.'],
+  ['11:45 – 12:45', '60 min', '<b>Zones, interfaces &amp; the flow module</b>', 'Lecture',
+    'Security-zones concept, host-inbound-traffic, screen options, session table, flow session lifecycle.'],
+  ['12:45 – 1:45',  '60 min', 'Lunch', ''],
+  ['1:45 – 2:45',   '60 min', '<b>Lab 2 · Zones &amp; basic connectivity</b>', 'Hands-on lab',
+    'Assign interfaces to trust / untrust / DMZ zones; configure host-inbound services; verify with <span class="mono">show security zones</span> and <span class="mono">show security flow session</span>.'],
+  ['2:45 – 3:45',   '60 min', '<b>Security policies — deep dive</b>', 'Lecture',
+    'Policy structure, match criteria, address books, application objects, global policies, ordering &amp; shadowing, logging.'],
+  ['3:45 – 4:00',   '15 min', 'Break', ''],
+  ['4:00 – 4:45',   '45 min', '<b>Lab 3 · Build your first policy set</b>', 'Hands-on lab',
+    'Permit/deny between zones; custom applications; address books; enable session logging; validate with traffic generation.'],
+  ['4:45 – 5:00',   '15 min', '<b>Day 1 recap, Q&amp;A, homework reading</b>', 'Discussion'],
+];
+const AGENDA_DAY2 = [
+  ['9:00 – 9:15',   '15 min', '<b>Day 1 review · quick quiz</b>', 'Discussion'],
+  ['9:15 – 10:15',  '60 min', '<b>NAT on SRX</b>', 'Lecture',
+    'Source NAT (interface, pool, PAT), destination NAT, static NAT, proxy ARP, NAT processing order vs. policy evaluation.'],
+  ['10:15 – 10:30', '15 min', 'Break', ''],
+  ['10:30 – 11:45', '75 min', '<b>Lab 4 · NAT scenarios</b>', 'Hands-on lab',
+    'Source NAT for outbound internet; destination NAT for inbound web server; static NAT for a server pair. Verify translation tables.'],
+  ['11:45 – 12:45', '60 min', '<b>Routing on SRX</b>', 'Lecture',
+    'Static routes, routing-instances, OSPF / BGP essentials for security engineers, route leaking, filter-based forwarding intro.'],
+  ['12:45 – 1:45',  '60 min', 'Lunch', ''],
+  ['1:45 – 2:45',   '60 min', '<b>Lab 5 · Dynamic routing with security zones</b>', 'Hands-on lab',
+    'OSPF between SRX and a neighbor; verify adjacency; tie routing into zone/policy design.'],
+  ['2:45 – 3:45',   '60 min', '<b>IPsec VPN fundamentals</b>', 'Lecture',
+    'IKEv1 / IKEv2, Phase 1 &amp; Phase 2, policy-based vs. route-based VPNs (st0 interfaces), PSK vs. certificates, NAT-T.'],
+  ['3:45 – 4:00',   '15 min', 'Break', ''],
+  ['4:00 – 5:00',   '60 min', '<b>Lab 6 · Route-based site-to-site IPsec VPN</b>', 'Hands-on lab',
+    'Tunnel between two SRX pods; st0 configuration; proxy-IDs; security policies for tunnel traffic; troubleshoot with <span class="mono">show security ike/ipsec sa</span>.'],
+  ['5:00',          '—',      '<b>Day 2 recap, preview of Day 3</b>', 'Discussion'],
+];
+const AGENDA_DAY3 = [
+  ['9:00 – 9:15',   '15 min', '<b>Day 2 review</b>', 'Discussion'],
+  ['9:15 – 10:15',  '60 min', '<b>AppSecure suite</b>', 'Lecture',
+    'AppID, AppTrack, AppFW, AppQoS; application signature updates; building app-aware policies.'],
+  ['10:15 – 10:30', '15 min', 'Break', ''],
+  ['10:30 – 11:30', '60 min', '<b>Lab 7 · Application-aware policy + IDP</b>', 'Hands-on lab',
+    'Enable AppID; create AppFW rules (e.g. permit web but block Facebook); attach an IDP policy to a security rule; review logs.'],
+  ['11:30 – 12:30', '60 min', '<b>UTM &amp; Content Security</b>', 'Lecture',
+    'Web filtering, AV, anti-spam, content filtering; SSL proxy (forward/reverse) overview; ATP Cloud integration.'],
+  ['12:30 – 1:30',  '60 min', 'Lunch', ''],
+  ['1:30 – 2:15',   '45 min', '<b>Lab 8 · UTM web filtering &amp; SSL forward proxy</b>', 'Hands-on lab',
+    'URL category filtering; apply UTM profile to a policy; optionally enable SSL forward proxy and inspect.'],
+  ['2:15 – 3:15',   '60 min', '<b>High Availability — Chassis Cluster &amp; Multinode HA</b>', 'Lecture',
+    'Active/passive vs. active/active; control &amp; fabric links; redundancy groups; RETH interfaces; MNHA architecture, ICL, active-active across Layer 3.'],
+  ['3:15 – 3:30',   '15 min', 'Break', ''],
+  ['3:30 – 4:30',   '60 min', '<b>Lab 9 · Chassis cluster build</b>', 'Hands-on lab',
+    'Pair two vSRX into a cluster; configure cluster ID and node IDs; redundancy groups and RETH interfaces; trigger failover and observe.'],
+  ['4:30 – 5:15',   '45 min', '<b>Logical Systems (LSYS) &amp; Tenant Systems (TSYS)</b>', 'Lecture + demo',
+    'Use cases, architectural differences, resource profiles, administration model; guided walkthrough creating an LSYS and a TSYS.'],
+  ['5:15 – 6:00',   '45 min', '<b>Capstone challenge</b>', 'Hands-on lab',
+    'Integrated troubleshooting scenario: fix a broken multi-zone, NAT + VPN + UTM config against the clock.'],
+  ['6:00',          '—',      '<b>Wrap-up, certificates, next-step learning paths</b>', 'Discussion',
+    'JNCIS-SEC → JNCIP-SEC pathway, internal next-steps.'],
+];
+</script>
+<script>
+  // ---------- AGENDA RENDERING ----------
+  function row(time, dur, session, format, extra) {
+    const kind = format && format.toLowerCase().includes('lab') ? 'lab'
+               : format && format.toLowerCase().includes('lecture') ? 'lec'
+               : format && format.toLowerCase().includes('discussion') ? 'dis'
+               : format && format.toLowerCase().includes('demo') ? 'lec'
+               : '';
+    const isBreak = !format;
+    return `<div class="agenda-row${isBreak ? ' break' : ''}">
+      <div class="ag-time">${time}</div>
+      <div class="ag-dur">${dur}</div>
+      <div class="ag-session">${session}${extra ? `<span class="desc">${extra}</span>` : ''}</div>
+      ${format ? `<div class="ag-format ${kind}">${format}</div>` : '<div></div>'}
+    </div>`;
+  }
+  function header() {
+    return `<div class="agenda-row header">
+      <div>Time (SGT)</div><div>Duration</div><div>Session</div><div>Format</div>
+    </div>`;
+  }
+  function renderDay(id, rows) {
+    document.getElementById(id).innerHTML = header() + rows.map(r => row(...r)).join('');
+  }
+  renderDay('d1-table', AGENDA_DAY1);
+  renderDay('d2-table', AGENDA_DAY2);
+  renderDay('d3-table', AGENDA_DAY3);
+
+  // Day tabs
+  document.querySelectorAll('.day-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const d = btn.dataset.day;
+      document.querySelectorAll('.day-tab').forEach(b => b.classList.toggle('active', b.dataset.day === d));
+      document.querySelectorAll('.day-panel').forEach(p => p.classList.toggle('active', p.dataset.day === d));
+    });
+  });
+
+  // ---------- TWEAKS ----------
+  let state = Object.assign({}, TWEAK_DEFAULTS);
+
+  function applyState() {
+    document.documentElement.setAttribute('data-theme', state.theme);
+    const hueMap = { teal: 'var(--hue-teal)', slate: 'var(--hue-slate)', amber: 'var(--hue-amber)', crimson: 'var(--hue-crimson)' };
+    document.documentElement.style.setProperty('--accent-h', hueMap[state.accent] || 'var(--hue-teal)');
+    // Update panel UI
+    document.querySelectorAll('#seg-theme button').forEach(b => b.classList.toggle('on', b.dataset.v === state.theme));
+    document.querySelectorAll('#sw-accent .swatch').forEach(b => b.classList.toggle('on', b.dataset.v === state.accent));
+  }
+  applyState();
+
+  function setKey(k, v) {
+    state[k] = v;
+    applyState();
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+  }
+
+  document.querySelectorAll('#seg-theme button').forEach(b => {
+    b.addEventListener('click', () => setKey('theme', b.dataset.v));
+  });
+  document.querySelectorAll('#sw-accent .swatch').forEach(b => {
+    b.addEventListener('click', () => setKey('accent', b.dataset.v));
+  });
+
+  // Tweaks visibility protocol
+  window.addEventListener('message', (ev) => {
+    if (!ev.data) return;
+    if (ev.data.type === '__activate_edit_mode') {
+      document.getElementById('tweaks-panel').classList.add('visible');
+    }
+    if (ev.data.type === '__deactivate_edit_mode') {
+      document.getElementById('tweaks-panel').classList.remove('visible');
+    }
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
+</body>
+</html>

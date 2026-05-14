@@ -497,6 +497,23 @@
   }
   html[data-theme="dark"] .agenda-row.break { background: var(--bg-3); }
   .agenda-row.break .ag-session { font-style: italic; }
+  .agenda-row.remote {
+    background: oklch(93% 0.05 240);
+    border-left: 3px solid oklch(55% 0.15 240);
+  }
+  html[data-theme="dark"] .agenda-row.remote { background: oklch(22% 0.05 240); }
+  .remote-badge {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.1em 0.5em;
+    border-radius: 4px;
+    font-size: 0.72em;
+    font-weight: 600;
+    background: oklch(55% 0.15 240);
+    color: #fff;
+    vertical-align: middle;
+    letter-spacing: 0.01em;
+  }
   .ag-time {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -1174,9 +1191,9 @@
 <script>
 const AGENDA_DAY1 = [
   ['9:30 – 10:00',  '30 min', '<b>Welcome, introductions &amp; lab access verification</b>', 'Lecture',
-    '<span style="color:oklch(42% 0.07 60)">⚠ June 2: Remote — join from hotel via video</span>'],
+    'Join from hotel via Microsoft Teams.', 'remote'],
   ['10:00 – 12:00', '2 hr',   '<b>Lab 1 · JCL lab exercise</b>', 'Hands-on lab',
-    'Hands-on JCL lab exercise. <span style="color:oklch(42% 0.07 60)">⚠ June 2: Remote · JCL lab from hotel.</span>'],
+    'Hands-on JCL lab exercise — conducted remotely from hotel via Microsoft Teams.', 'remote'],
   ['12:00 – 1:00',  '60 min', 'Lunch — <span style="font-weight:400">June 2: return to classroom at 1:00 PM</span>', ''],
   ['1:00 – 2:00',   '60 min', '<b>SE Tools</b>', 'Lecture',
     'Overview of key SE tools: Pathfinder, JTAC, JCL, S&amp;P, GNATS, Agile, and more.'],
@@ -1230,17 +1247,19 @@ const AGENDA_DAY3 = [
 </script>
 <script>
   // ---------- AGENDA RENDERING ----------
-  function row(time, dur, session, format, extra) {
+  function row(time, dur, session, format, extra, flags) {
     const kind = format && format.toLowerCase().includes('lab') ? 'lab'
                : format && format.toLowerCase().includes('lecture') ? 'lec'
                : format && format.toLowerCase().includes('discussion') ? 'dis'
                : format && format.toLowerCase().includes('demo') ? 'lec'
                : '';
     const isBreak = !format;
-    return `<div class="agenda-row${isBreak ? ' break' : ''}">
+    const isRemote = flags && flags.includes('remote');
+    const remoteBadge = isRemote ? '<span class="remote-badge">📹 Remote · via Teams</span>' : '';
+    return `<div class="agenda-row${isBreak ? ' break' : ''}${isRemote ? ' remote' : ''}">
       <div class="ag-time">${time}</div>
       <div class="ag-dur">${dur}</div>
-      <div class="ag-session">${session}${extra ? `<span class="desc">${extra}</span>` : ''}</div>
+      <div class="ag-session">${session}${remoteBadge}${extra ? `<span class="desc">${extra}</span>` : ''}</div>
       ${format ? `<div class="ag-format ${kind}">${format}</div>` : '<div></div>'}
     </div>`;
   }

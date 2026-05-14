@@ -6,7 +6,7 @@ Internal training website for the **Advanced SRX Firewall Bootcamp** — a 3-day
 
 | | |
 |---|---|
-| **Dates** | May 26–28, 2026 · or June 2–4, 2026 (tentative) |
+| **Dates** | June 2–4, 2026 |
 | **Location** | HPE Singapore — 1 Depot Close, Singapore 109841 |
 | **Format** | In-person · Hands-on labs (JCL and CloudShare) |
 | **Seats** | Limited to 10 engineers |
@@ -14,9 +14,9 @@ Internal training website for the **Advanced SRX Firewall Bootcamp** — a 3-day
 
 ## Curriculum
 
-- **Day 1** — JCL Lab, SE Tools, High Availability (Chassis Cluster & MNHA), Tenant Systems (LSYS & TSYS)
-- **Day 2** — NAT, Routing & VPN (IPsec)
-- **Day 3** — Advanced Services (AppSecure, UTM, Content Security) & Capstone Challenge
+- **Day 1** — JCL Lab, SE Tools, High Availability Part 1 & Part 2 (MNHA)
+- **Day 2** — Multi-tenant Support (TSYS & LSYS), Sizing & BOM, SRX Automation (Python, PyEZ & MCP)
+- **Day 3** — Cloud & Virtualization (vSRX & cSRX), VPN (IPsec, SSL & SSL Proxy), EVPN / Secure Data Center Architecture, CSDS Scale Out Architecture, Tap Mode POC
 
 > **June 2 notice:** A fire drill at HPE Depot Close affects the morning of June 2. Students join morning sessions remotely from the hotel via video conference (JCL lab exercise provided). Return to classroom from 1:00 PM.
 
@@ -24,20 +24,17 @@ Internal training website for the **Advanced SRX Firewall Bootcamp** — a 3-day
 
 ```
 srx-bootcamp/
-├── index.html        # Landing / overview page
-├── bootcamp.html     # Full bootcamp page (agenda, prereqs, venue, registration)
+├── index.html        # Full bootcamp page (agenda, prereqs, venue, registration)
 ├── netlify.toml      # Netlify deployment config
 └── README.md
 ```
 
 ## Viewing Locally
 
-No build step required — open either HTML file directly in a browser:
+No build step required — open the HTML file directly in a browser:
 
 ```bash
 open index.html
-# or
-open bootcamp.html
 ```
 
 ## Deployment
@@ -46,13 +43,13 @@ The site is deployed via [Netlify](https://netlify.com). Any push to the `main` 
 
 ## Making Updates
 
-All content — agenda, dates, venue, registration contacts — lives directly in the HTML files as inline data. Key sections to edit:
+All content — agenda, dates, venue, registration contacts — lives directly in `index.html` as inline data. Key sections to edit:
 
-- **Dates / seats / format** — `bootcamp.html`, the `spec-card` aside in the hero section
-- **Agenda** — `bootcamp.html`, the `AGENDA_DAY1 / DAY2 / DAY3` JavaScript arrays
-- **Prerequisites** — `bootcamp.html`, the `#prereqs` section
-- **Venue & hotel** — `bootcamp.html`, the `#venue` section
-- **Registration contacts** — `bootcamp.html`, the `.reg-contact` div in the `#register` section
+- **Dates / seats / format** — the `spec-card` aside in the hero section
+- **Agenda** — the `AGENDA_DAY1 / DAY2 / DAY3` JavaScript arrays
+- **Prerequisites** — the `#prereqs` section
+- **Venue & hotel** — the `#venue` section
+- **Registration contacts** — the `.reg-contact` div in the `#register` section
 
 ## Contacts
 

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip3 install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Update Day 1–3 agenda and add PowerPoint export *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(git commit -m 'Update Day 1 & 2 agenda: new sessions and timing adjustments *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

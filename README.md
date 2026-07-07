@@ -1,24 +1,21 @@
 # Advanced SRX Firewall Bootcamp
 
-Internal training website for the **Advanced SRX Firewall Bootcamp** — a 3-day instructor-led, lab-heavy program for HPE APJ Systems Engineers covering advanced Juniper SRX security features.
+Internal training website for the **Advanced SRX Firewall Bootcamp** — a 2-day instructor-led program for HPE India Systems Engineers covering advanced Juniper SRX security features.
 
 ## Overview
 
 | | |
 |---|---|
-| **Dates** | June 2–4, 2026 |
-| **Location** | HPE Singapore — 1 Depot Close, Singapore 109841 |
-| **Format** | In-person · Hands-on labs (JCL and CloudShare) |
-| **Seats** | Limited to 10 engineers |
-| **Audience** | Internal · APJ Systems Engineers |
+| **Session 1** | Aug 4–5, 2026 — HPE India, Bangalore |
+| **Session 2** | Aug 12–13, 2026 — HPE India, New Delhi |
+| **Format** | In-person · Lectures and discussions |
+| **Seats** | Limited per session |
+| **Audience** | Internal · HPE India Systems Engineers |
 
 ## Curriculum
 
-- **Day 1** — JCL Lab, SE Tools, High Availability Part 1 & Part 2 (MNHA)
-- **Day 2** — Multi-tenant Support (TSYS & LSYS), Sizing & BOM, SRX Automation (Python, PyEZ & MCP)
-- **Day 3** — Cloud & Virtualization (vSRX & cSRX), VPN (IPsec, SSL & SSL Proxy), EVPN / Secure Data Center Architecture, CSDS Scale Out Architecture, Tap Mode POC
-
-> **June 2 notice:** A fire drill at HPE Depot Close affects the morning of June 2. Students join morning sessions remotely from the hotel via video conference (JCL lab exercise provided). Return to classroom from 1:00 PM.
+- **Day 1** — SRX Packet Walkthrough, Security Services, High Availability (MNHA), Tap Mode POC, MIST Security Assurance, Multi-tenant Support (TSYS & LSYS), Sizing & BOM, SE Tools
+- **Day 2** — User Firewall & Security Director, SRX Automation (MCP), CGNAT on MX and SRX, Cloud & Virtualization (vSRX & cSRX), Advanced Security Threat, EVPN / Secure Data Center Architecture, CSDS Scale Out Architecture & Wrap-up
 
 ## Repository Structure
 
@@ -46,9 +43,9 @@ The site is deployed via [Netlify](https://netlify.com). Any push to the `main` 
 All content — agenda, dates, venue, registration contacts — lives directly in `index.html` as inline data. Key sections to edit:
 
 - **Dates / seats / format** — the `spec-card` aside in the hero section
-- **Agenda** — the `AGENDA_DAY1 / DAY2 / DAY3` JavaScript arrays
+- **Agenda** — the `AGENDA_DAY1 / DAY2` JavaScript arrays
 - **Prerequisites** — the `#prereqs` section
-- **Venue & hotel** — the `#venue` section
+- **Venues** — the `#venue` section
 - **Registration contacts** — the `.reg-contact` div in the `#register` section
 
 ## Contacts

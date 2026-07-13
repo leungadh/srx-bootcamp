@@ -1014,7 +1014,7 @@
 
     <div class="day-tabs" role="tablist">
       <button class="day-tab active" data-day="1" role="tab"><span class="d-num">Day 01</span><span class="d-title">Security Services, HA &amp; Sizing</span></button>
-      <button class="day-tab" data-day="2" role="tab"><span class="d-num">Day 02</span><span class="d-title">Automation, Cloud &amp; Advanced Threats</span></button>
+      <button class="day-tab" data-day="2" role="tab"><span class="d-num">Day 02</span><span class="d-title">EVPN, Automation, Cloud &amp; CSDS</span></button>
     </div>
 
     <!-- DAY 1 -->
@@ -1030,7 +1030,7 @@
     <div class="day-panel" data-day="2">
       <div class="day-theme">
         <div class="theme-k">Theme</div>
-        <p>Deep-dive into Security Director, SRX automation with MCP, cloud and virtualization deployments, advanced threat services, EVPN/secure DC architecture, and CSDS scale-out.</p>
+        <p>Open with EVPN and Secure DC architecture, then cover SRX automation with MCP and CGNAT. After lunch: User Firewall &amp; Security Director, Cloud and Virtualization, Advanced Security Threat, and CSDS scale-out wrap-up.</p>
       </div>
       <div class="agenda-table" id="d2-table"></div>
     </div>
@@ -1165,9 +1165,9 @@
 
 <script>
 const AGENDA_DAY1 = [
-  ['9:00 – 9:30',   '30 min', '<b>SRX Packet Walkthrough</b>', 'Lecture',
-    'Overview of how SRX handles network packets, and the internal process adding policy and security services to network traffic.'],
-  ['9:30 – 10:30',  '60 min', '<b>SRX Security Services</b>', 'Lecture',
+  ['9:00 – 9:45',   '45 min', '<b>SRX Packet Walkthrough and JCL Lab Overview</b>', 'Lecture',
+    'Overview of how SRX handles network packets, the internal process adding policy and security services to network traffic, and an introduction to the JCL lab environment.'],
+  ['9:45 – 10:30',  '45 min', '<b>SRX Security Services</b>', 'Lecture',
     'Overview of the security policy and security services on the SRX platform.'],
   ['10:30 – 10:45', '15 min', 'Morning break', ''],
   ['10:45 – 12:00', '75 min', '<b>High Availability — MNHA</b>', 'Lecture',
@@ -1187,23 +1187,23 @@ const AGENDA_DAY1 = [
     'Overview of key SE tools: Pathfinder, JTAC, JCL, S&amp;P, GNATS, Agile, and more.'],
 ];
 const AGENDA_DAY2 = [
-  ['9:00 – 10:00',  '60 min', '<b>User Firewall and Security Director</b>', 'Lecture',
-    'Introduction to the SRX security management solution and configuration. How to configure SRX User Firewall with MS AD.'],
+  ['9:00 – 10:00',  '60 min', '<b>EVPN / Secure Data Center Architecture</b>', 'Lecture',
+    'EVPN fundamentals and its role in secure data center design; integration with SRX for east-west and north-south traffic security; overlay and underlay considerations.'],
   ['10:00 – 10:15', '15 min', 'Morning break', ''],
   ['10:15 – 11:15', '60 min', '<b>SRX Automation: MCP Integration</b>', 'Lecture',
     'Model-driven configuration with MCP — automation frameworks, use cases, and integration with SRX for network automation workflows.'],
   ['11:15 – 12:00', '45 min', '<b>CGNAT on MX and SRX</b>', 'Lecture',
     'CGNAT fundamentals, deployment scenarios, and how to position CGNAT on the SRX and MX platforms.'],
   ['12:00 – 1:00',  '60 min', 'Lunch', ''],
-  ['1:00 – 2:00',   '60 min', '<b>Cloud and Virtualization</b>', 'Lecture',
+  ['1:00 – 2:00',   '60 min', '<b>User Firewall and Security Director</b>', 'Lecture',
+    'Introduction to the SRX security management solution and configuration. How to configure SRX User Firewall with MS AD.'],
+  ['2:00 – 2:45',   '45 min', '<b>Cloud and Virtualization</b>', 'Lecture',
     'Cloud deployment models for SRX; vSRX on VMware, KVM, and public cloud (AWS, Azure, GCP); cSRX for containerized environments — use cases, sizing, and licensing.'],
-  ['2:00 – 3:00',   '60 min', '<b>Advanced Security Threat</b>', 'Lecture',
+  ['2:45 – 3:15',   '30 min', 'Afternoon break', ''],
+  ['3:15 – 3:45',   '30 min', '<b>Advanced Security Threat</b>', 'Lecture',
     'Demo of Quantum Safe QKD VPN, and advanced threat security services including DNS Security and Adaptive Threat Prevention.'],
-  ['3:00 – 3:15',   '15 min', 'Afternoon break', ''],
-  ['3:15 – 4:15',   '60 min', '<b>EVPN / Secure Data Center Architecture</b>', 'Lecture',
-    'EVPN fundamentals and its role in secure data center design; integration with SRX for east-west and north-south traffic security; overlay and underlay considerations.'],
-  ['4:15 – 4:30',   '15 min', 'Afternoon break', ''],
-  ['4:30 – 5:00',   '30 min', '<b>CSDS Scale Out Architecture &amp; Wrap-up</b>', 'Discussion',
+  ['3:45 – 4:15',   '30 min', 'Afternoon break', ''],
+  ['4:15 – 5:00',   '45 min', '<b>CSDS Scale Out Architecture &amp; Wrap-up</b>', 'Discussion',
     'Connected Security Distributed Services (CSDS) scale-out architecture; distributed enforcement points; followed by Q&amp;A, JNCIS-SEC → JNCIP-SEC pathway, and next steps.'],
 ];
 </script>

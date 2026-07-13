@@ -537,6 +537,13 @@
     margin-top: 4px;
     font-weight: 400;
   }
+  .ag-session .instr {
+    display: block;
+    color: var(--accent);
+    font-size: 12px;
+    margin-top: 3px;
+    font-weight: 500;
+  }
   .ag-session b { font-weight: 600; }
   .ag-format {
     font-family: var(--font-mono);
@@ -1165,45 +1172,45 @@
 
 <script>
 const AGENDA_DAY1 = [
-  ['9:00 – 9:45',   '45 min', '<b>SRX Packet Walkthrough and JCL Lab Overview</b>', 'Lecture',
+  ['9:00 – 9:45',   '45 min', '<b>SRX Packet Walkthrough and JCL Lab Overview</b><span class="instr">Andy Leung</span>', 'Lecture',
     'Overview of how SRX handles network packets, the internal process adding policy and security services to network traffic, and an introduction to the JCL lab environment.'],
-  ['9:45 – 10:30',  '45 min', '<b>SRX Security Services</b>', 'Lecture',
+  ['9:45 – 10:30',  '45 min', '<b>SRX Security Services</b><span class="instr">Deepak Singh</span>', 'Lecture',
     'Overview of the security policy and security services on the SRX platform.'],
   ['10:30 – 10:45', '15 min', 'Morning break', ''],
-  ['10:45 – 12:00', '75 min', '<b>High Availability — MNHA</b>', 'Lecture',
+  ['10:45 – 12:00', '75 min', '<b>High Availability — MNHA</b><span class="instr">Deepak Singh</span>', 'Lecture',
     'MNHA architecture, ICL, active-active across Layer 3; deployment scenarios, design considerations, and case study: MNHA + SSL Proxy in POC.'],
   ['12:00 – 1:00',  '60 min', 'Lunch', ''],
-  ['1:00 – 1:30',   '30 min', '<b>SRX Tap Mode POC</b>', 'Lecture',
+  ['1:00 – 1:30',   '30 min', '<b>SRX Tap Mode POC</b><span class="instr">Nugroho Adisubrata</span>', 'Lecture',
     'How to deploy SRX in a POC environment using a non-intrusive TAP mode configuration, and how to use the collected log data to build an APN (Application and Network Risk) report.'],
-  ['1:30 – 2:00',   '30 min', '<b>MIST Security Assurance</b>', 'Lecture',
+  ['1:30 – 2:00',   '30 min', '<b>MIST Security Assurance</b><span class="instr">Nugroho Adisubrata</span>', 'Lecture',
     'Cloud-Native security service enforces Zero-Trust Security and segmentation for users and devices across enterprise.'],
-  ['2:00 – 3:00',   '60 min', '<b>Multi-tenant Support — TSYS &amp; LSYS</b>', 'Lecture',
+  ['2:00 – 3:00',   '60 min', '<b>Multi-tenant Support — TSYS &amp; LSYS</b><span class="instr">Nugroho Adisubrata</span>', 'Lecture',
     'Tenant Systems (TSYS) and Logical Systems (LSYS) — use cases, architectural differences, resource profiles, administration model.'],
   ['3:00 – 3:15',   '15 min', 'Afternoon break', ''],
-  ['3:15 – 4:15',   '60 min', '<b>Sizing and BOM</b>', 'Lecture',
+  ['3:15 – 4:15',   '60 min', '<b>Sizing and BOM</b><span class="instr">Alex Chan · Avinash CN</span>', 'Lecture',
     'SRX platform sizing methodology, bill of materials, throughput and capacity planning for security deployments.'],
   ['4:15 – 4:30',   '15 min', 'Afternoon break', ''],
-  ['4:30 – 5:00',   '30 min', '<b>SE Tools</b>', 'Lecture',
+  ['4:30 – 5:00',   '30 min', '<b>SE Tools</b><span class="instr">Alex Chan · Avinash CN</span>', 'Lecture',
     'Overview of key SE tools: Pathfinder, JTAC, JCL, S&amp;P, GNATS, Agile, and more.'],
 ];
 const AGENDA_DAY2 = [
-  ['9:00 – 10:00',  '60 min', '<b>EVPN / Secure Data Center Architecture</b>', 'Lecture',
+  ['9:00 – 10:00',  '60 min', '<b>EVPN / Secure Data Center Architecture</b><span class="instr">Nugroho Adisubrata</span>', 'Lecture',
     'EVPN fundamentals and its role in secure data center design; integration with SRX for east-west and north-south traffic security; overlay and underlay considerations.'],
   ['10:00 – 10:15', '15 min', 'Morning break', ''],
-  ['10:15 – 11:15', '60 min', '<b>SRX Automation: MCP Integration</b>', 'Lecture',
+  ['10:15 – 11:15', '60 min', '<b>SRX Automation: MCP Integration</b><span class="instr">Nugroho Adisubrata</span>', 'Lecture',
     'Model-driven configuration with MCP — automation frameworks, use cases, and integration with SRX for network automation workflows.'],
-  ['11:15 – 12:00', '45 min', '<b>CGNAT on MX and SRX</b>', 'Lecture',
+  ['11:15 – 12:00', '45 min', '<b>CGNAT on MX and SRX</b><span class="instr">Andy Leung</span>', 'Lecture',
     'CGNAT fundamentals, deployment scenarios, and how to position CGNAT on the SRX and MX platforms.'],
   ['12:00 – 1:00',  '60 min', 'Lunch', ''],
-  ['1:00 – 2:00',   '60 min', '<b>User Firewall and Security Director</b>', 'Lecture',
+  ['1:00 – 2:00',   '60 min', '<b>User Firewall and Security Director</b><span class="instr">Alex Chan</span>', 'Lecture',
     'Introduction to the SRX security management solution and configuration. How to configure SRX User Firewall with MS AD.'],
-  ['2:00 – 2:45',   '45 min', '<b>Cloud and Virtualization</b>', 'Lecture',
+  ['2:00 – 2:45',   '45 min', '<b>Cloud and Virtualization</b><span class="instr">Alex Chan</span>', 'Lecture',
     'Cloud deployment models for SRX; vSRX on VMware, KVM, and public cloud (AWS, Azure, GCP); cSRX for containerized environments — use cases, sizing, and licensing.'],
   ['2:45 – 3:15',   '30 min', 'Afternoon break', ''],
-  ['3:15 – 3:45',   '30 min', '<b>Advanced Security Threat</b>', 'Lecture',
+  ['3:15 – 3:45',   '30 min', '<b>Advanced Security Threat</b><span class="instr">Alex Chan</span>', 'Lecture',
     'Demo of Quantum Safe QKD VPN, and advanced threat security services including DNS Security and Adaptive Threat Prevention.'],
   ['3:45 – 4:15',   '30 min', 'Afternoon break', ''],
-  ['4:15 – 5:00',   '45 min', '<b>CSDS Scale Out Architecture &amp; Wrap-up</b>', 'Discussion',
+  ['4:15 – 5:00',   '45 min', '<b>CSDS Scale Out Architecture &amp; Wrap-up</b><span class="instr">Deepak Singh</span>', 'Discussion',
     'Connected Security Distributed Services (CSDS) scale-out architecture; distributed enforcement points; followed by Q&amp;A, JNCIS-SEC → JNCIP-SEC pathway, and next steps.'],
 ];
 </script>
